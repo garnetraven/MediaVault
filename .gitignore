@@ -1,0 +1,30 @@
+# Root level .gitignore
+
+# Angular specific ignores
+angular/node_modules/
+angular/dist/
+angular/.tmp/
+angular/.angular/
+angular/*.log
+angular/*.tsbuildinfo
+
+# Spring Boot specific ignores
+backend/target/
+backend/.maven/
+backend/.settings/
+backend/*.log
+backend/*.iml
+
+# IDEs
+.idea/
+.vscode/
+backend/.classpath
+backend/.project
+backend/.factorypath
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
