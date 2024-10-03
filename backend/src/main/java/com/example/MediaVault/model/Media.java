@@ -12,5 +12,7 @@ public class Media {
     @Column
     private String name;
 
-    // Getters and setters
+    public Media(String name) {
+      this.name = name;
+    }
 }

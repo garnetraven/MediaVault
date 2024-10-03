@@ -7,7 +7,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   standalone: true,
   imports: [RouterOutlet, DashboardComponent],
   template: `
-    <app-dashboard></app-dashboard>
+    <app-dashboard />
     <router-outlet />
   `,
   styles: [],

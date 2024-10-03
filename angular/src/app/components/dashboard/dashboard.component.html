@@ -41,6 +41,24 @@
       <!-- Repeat media item div for more items -->
     </div>
 
+   <section class="users">
+    <h2>Users</h2>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.username }} - {{ user.email }}
+      </li>
+    </ul>
+  </section>
+
+  <section class="media-items">
+    <h2>Media Items</h2>
+    <ul>
+      <li *ngFor="let item of mediaItems">
+        {{ item.title }} - {{ item.type }}
+      </li>
+    </ul>
+  </section>
+
     <!-- Pagination -->
     <div class="mt-8 flex justify-center">
       <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
