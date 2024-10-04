@@ -3,7 +3,12 @@ package com.example.MediaVault.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User {
     @Id
@@ -16,7 +21,7 @@ public class User {
     @Column
     private String password;
 
-    @Column
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     // No-args constructor

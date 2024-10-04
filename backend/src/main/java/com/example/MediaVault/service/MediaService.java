@@ -13,10 +13,6 @@ public class MediaService {
     @Autowired
     private MediaRepository mediaRepository;
 
-    public Media createMedia(Media media) {
-        return mediaRepository.save(media);
-    }
-
     public List<Media> getAllMedia() {
       return mediaRepository.findAll();
     }
