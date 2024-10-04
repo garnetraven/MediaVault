@@ -19,15 +19,21 @@ public class MediaController {
     @Autowired
     private MediaService mediaService;
 
- @GetMapping("/media")
-public ResponseEntity<List<Media>> getAllMedia() {
-    try {
+    @GetMapping("/media")
+    public ResponseEntity<List<Media>> getAllMedia() {
+      try {
         List<Media> mediaList = mediaService.getAllMedia();
         return ResponseEntity.ok(mediaList);
-    } catch (Exception e) {
+      } catch (Exception e) {
         // Log the error
         logger.error("Error fetching media: ", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+      }
     }
-}
+
+    @PostMapping("/media")
+    public ResponseEntity<Media> createMedia(@RequestBody Media media) {
+      Media createdMedia = mediaService.createMedia(media);
+      return ResponseEntity.ok(createdMedia);
+  }
 }

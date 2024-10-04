@@ -16,4 +16,9 @@ public class MediaService {
     public List<Media> getAllMedia() {
       return mediaRepository.findAll();
     }
+
+     public Media createMedia(Media media) {
+        // Add validation and business logic here
+        return mediaRepository.save(media);
+    }   
 }
