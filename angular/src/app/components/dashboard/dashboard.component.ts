@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
   users: any[] = [];
   mediaItems: any[] = [];
+  showAddMediaForm: boolean = false;
+  newMedia: any = {};
 
   constructor(private mediaService: MediaService) { }
 
@@ -33,5 +36,23 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Add methods for creating users and media types
+  openAddMediaForm() {
+    this.showAddMediaForm = true;
+    this.newMedia = {}; // Reset the form
+  }
+
+  closeAddMediaForm() {
+    this.showAddMediaForm = false;
+  }
+
+  addNewMedia() {
+    this.mediaService.addMediaItem(this.newMedia).subscribe(
+      response => {
+        console.log('Media added successfully', response);
+        this.mediaItems.push(response);
+        this.closeAddMediaForm();
+      },
+      error => console.error('Error adding media:', error)
+    );
+  }
 }
