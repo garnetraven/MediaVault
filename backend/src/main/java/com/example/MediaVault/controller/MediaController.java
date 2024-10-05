@@ -25,7 +25,6 @@ public class MediaController {
         List<Media> mediaList = mediaService.getAllMedia();
         return ResponseEntity.ok(mediaList);
       } catch (Exception e) {
-        // Log the error
         logger.error("Error fetching media: ", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
       }
@@ -33,7 +32,12 @@ public class MediaController {
 
     @PostMapping("/media")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
-      Media createdMedia = mediaService.createMedia(media);
-      return ResponseEntity.ok(createdMedia);
+      try {
+        Media createdMedia = mediaService.createMedia(media);
+        return ResponseEntity.ok(createdMedia);
+      } catch (Exception e) {
+        logger.error("Error adding media: ", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+      }
   }
 }
