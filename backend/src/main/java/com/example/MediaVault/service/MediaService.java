@@ -20,5 +20,13 @@ public class MediaService {
      public Media createMedia(Media media) {
         // Add validation and business logic here
         return mediaRepository.save(media);
-    }   
+    }  
+
+    public boolean deleteMedia(Long id) {
+        if (mediaRepository.existsById(id)) {
+            mediaRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

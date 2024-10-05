@@ -55,4 +55,16 @@ export class DashboardComponent implements OnInit {
       error => console.error('Error adding media:', error)
     );
   }
+
+  deleteMedia(id: number) {
+    if (confirm("Are you sure you want to delete this media item?")) {
+      this.mediaService.deleteMediaItem(id).subscribe(
+        () => {
+          console.log("Media deleted successfully");
+          this.mediaItems = this.mediaItems.filter(item => item.id !== id);
+        },
+        error => console.error("Error deleting media: ", error)
+      );
+    }
+  }
 }

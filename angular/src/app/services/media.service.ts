@@ -26,4 +26,8 @@ export class MediaService {
     return this.http.post<any>(`${this.apiUrl}/media`, mediaItem);
   }
 
+  deleteMediaItem(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/media/${id}`);
+  }
+
 }

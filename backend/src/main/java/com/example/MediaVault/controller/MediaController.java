@@ -40,4 +40,19 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
       }
   }
+
+  @DeleteMapping("/media/{id}")
+  public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
+    try {
+        boolean deleted = mediaService.deleteMedia(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    } catch (Exception e) {
+        logger.error("Error deleting media with id {}: ", id, e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
 }
