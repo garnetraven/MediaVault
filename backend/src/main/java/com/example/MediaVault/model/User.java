@@ -5,68 +5,57 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
-    @Column
+    @Column(unique = true, nullable = false, length = 100)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(name = "display_name", length = 100)
+    private String displayName;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @Column(name = "is_admin")
+    private Boolean isAdmin = false;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // No-args constructor
-    public User() {
-    }
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    // Constructor with username and password
-    public User(String username, String password) {
+    // Constructor with essential fields
+    public User(String username, String email, String password) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.createdAt = LocalDateTime.now();
-    }
-
-    // Getters
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    // Setters
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+        this.updatedAt = LocalDateTime.now();
     }
 
     // toString method
@@ -75,11 +64,15 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", isAdmin=" + isAdmin +
                 ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 
-    // You might want to add equals and hashCode methods as well
+    // equals and hashCode methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,5 +84,15 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    // You might want to add a method to update the 'updatedAt' field
+    @PreUpdate
+    @PrePersist
+    public void updateTimestamps() {
+        updatedAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = updatedAt;
+        }
     }
 }

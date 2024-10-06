@@ -2,7 +2,9 @@ package com.example.MediaVault.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +16,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User createUser(User user) {
-        // You might want to add validation or business logic here
+        // Validate user data
+        if (existsByUsername(user.getUsername()) || existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Username or email already exists");
+        }
+
+        // Encode password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+
         return userRepository.save(user);
     }
 
@@ -24,34 +38,65 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null); // or throw an exception if user not found
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
     }
 
     public User updateUser(Long id, User userDetails) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            User existingUser = user.get();
-            existingUser.setUsername(userDetails.getUsername());
-            // Don't update password here, create a separate method for password updates
-            return userRepository.save(existingUser);
-        }
-        return null; // or throw an exception if user not found
+        User existingUser = getUserById(id);
+        
+        existingUser.setUsername(userDetails.getUsername());
+        existingUser.setEmail(userDetails.getEmail());
+        existingUser.setDisplayName(userDetails.getDisplayName());
+        existingUser.setBio(userDetails.getBio());
+        existingUser.setAvatarUrl(userDetails.getAvatarUrl());
+        existingUser.setUpdatedAt(LocalDateTime.now());
+
+        return userRepository.save(existingUser);
     }
 
-    public boolean deleteUser(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return true;
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("User not found with id: " + id);
         }
-        return false;
+        userRepository.deleteById(id);
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public void updateLastLogin(Long userId) {
+        User user = getUserById(userId);
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
+    public void changePassword(Long userId, String newPassword) {
+        User user = getUserById(userId);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
+    public void toggleAdminStatus(Long userId) {
+        User user = getUserById(userId);
+        user.setIsAdmin(!user.getIsAdmin());
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
