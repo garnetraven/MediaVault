@@ -55,4 +55,19 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
+
+  @PutMapping("/media/{id}")
+  public ResponseEntity<Media> updateMediaName(@PathVariable Long id, @RequestBody Media mediaUpdate) {
+    try {
+        Media updatedMedia = mediaService.updateMediaName(id, mediaUpdate.getName());
+        if (updatedMedia != null) {
+            return ResponseEntity.ok(updatedMedia);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    } catch (Exception e) {
+        logger.error("Error updating media name with id {}: ", id, e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+}
 }

@@ -13,7 +13,9 @@ export class DashboardComponent implements OnInit {
   users: any[] = [];
   mediaItems: any[] = [];
   showAddMediaForm: boolean = false;
+  showEditModal: boolean = false;
   newMedia: any = {};
+  editingMedia: any = {};
 
   constructor(private mediaService: MediaService) { }
 
@@ -66,5 +68,28 @@ export class DashboardComponent implements OnInit {
         error => console.error("Error deleting media: ", error)
       );
     }
+  }
+
+  openEditModal(item: any) {
+    this.editingMedia = { ...item };
+    this.showEditModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+  }
+
+  updateMediaName() {
+    this.mediaService.updateMediaName(this.editingMedia.id, this.editingMedia.name).subscribe(
+      updatedMedia => {
+        console.log('Media updated successfully', updatedMedia);
+        const index = this.mediaItems.findIndex(item => item.id === updatedMedia.id);
+        if (index !== -1) {
+          this.mediaItems[index] = updatedMedia;
+        }
+        this.closeEditModal();
+      },
+      error => console.error('Error updating media:', error)
+    );
   }
 }

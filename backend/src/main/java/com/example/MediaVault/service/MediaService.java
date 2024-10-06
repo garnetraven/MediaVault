@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.MediaVault.repository.MediaRepository;
 import com.example.MediaVault.model.Media;
@@ -28,5 +29,15 @@ public class MediaService {
             return true;
         }
         return false;
+    }
+
+    public Media updateMediaName(Long id, String newName) {
+      Optional<Media> mediaOptional = mediaRepository.findById(id);
+      if (mediaOptional.isPresent()) {
+        Media media = mediaOptional.get();
+        media.setName(newName);
+        return mediaRepository.save(media);
+      }
+      return null;
     }
 }

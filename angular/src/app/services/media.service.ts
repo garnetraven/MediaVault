@@ -30,4 +30,7 @@ export class MediaService {
     return this.http.delete<any>(`${this.apiUrl}/media/${id}`);
   }
 
+  updateMediaName(id: number, newName: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/media/${id}`, { name: newName });
+  }
 }
