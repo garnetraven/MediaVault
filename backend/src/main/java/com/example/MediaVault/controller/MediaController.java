@@ -33,6 +33,7 @@ public class MediaController {
     @PostMapping("/media")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
       try {
+        System.out.println("Received media: " + media.getName() + ", " + media.getImageUrl());
         Media createdMedia = mediaService.createMedia(media);
         return ResponseEntity.ok(createdMedia);
       } catch (Exception e) {
@@ -59,7 +60,7 @@ public class MediaController {
   @PutMapping("/media/{id}")
   public ResponseEntity<Media> updateMediaName(@PathVariable Long id, @RequestBody Media mediaUpdate) {
     try {
-        Media updatedMedia = mediaService.updateMediaName(id, mediaUpdate.getName());
+        Media updatedMedia = mediaService.updateMedia(id, mediaUpdate);
         if (updatedMedia != null) {
             return ResponseEntity.ok(updatedMedia);
         } else {

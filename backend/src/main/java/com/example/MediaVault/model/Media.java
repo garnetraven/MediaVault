@@ -13,14 +13,20 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    public Media() {
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    }
+    public Media() {}
 
     public Media(String name) {
       this.name = name;
+    }
+
+    public Media(String name, String imageUrl) {
+      this.name = name;
+      this.imageUrl = imageUrl;
     }
 }

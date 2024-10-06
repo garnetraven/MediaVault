@@ -14,8 +14,8 @@ export class DashboardComponent implements OnInit {
   mediaItems: any[] = [];
   showAddMediaForm: boolean = false;
   showEditModal: boolean = false;
-  newMedia: any = {};
-  editingMedia: any = {};
+  newMedia: any = { name: "", imageUrl: "" };
+  editingMedia: any = {id: null, name: "", imageUrl: ""};
 
   constructor(private mediaService: MediaService) { }
 
@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   }
 
   addNewMedia() {
+    console.log("Sending new media:", this.newMedia)
     this.mediaService.addMediaItem(this.newMedia).subscribe(
       response => {
         console.log('Media added successfully', response);
@@ -80,7 +81,7 @@ export class DashboardComponent implements OnInit {
   }
 
   updateMediaName() {
-    this.mediaService.updateMediaName(this.editingMedia.id, this.editingMedia.name).subscribe(
+    this.mediaService.updateMedia(this.editingMedia.id, this.editingMedia).subscribe(
       updatedMedia => {
         console.log('Media updated successfully', updatedMedia);
         const index = this.mediaItems.findIndex(item => item.id === updatedMedia.id);

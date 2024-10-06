@@ -31,13 +31,14 @@ public class MediaService {
         return false;
     }
 
-    public Media updateMediaName(Long id, String newName) {
-      Optional<Media> mediaOptional = mediaRepository.findById(id);
-      if (mediaOptional.isPresent()) {
-        Media media = mediaOptional.get();
-        media.setName(newName);
-        return mediaRepository.save(media);
-      }
-      return null;
+    public Media updateMedia(Long id, Media mediaUpdate) {
+        Optional<Media> mediaOptional = mediaRepository.findById(id);
+        if (mediaOptional.isPresent()) {
+            Media media = mediaOptional.get();
+            media.setName(mediaUpdate.getName());
+            media.setImageUrl(mediaUpdate.getImageUrl());
+            return mediaRepository.save(media);
+        }
+        return null;
     }
 }
