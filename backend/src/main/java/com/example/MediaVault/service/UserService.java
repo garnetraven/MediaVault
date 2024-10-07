@@ -2,7 +2,6 @@ package com.example.MediaVault.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +15,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public User createUser(User user) {
         // Validate user data
         if (existsByUsername(user.getUsername()) || existsByEmail(user.getEmail())) {
@@ -26,7 +22,7 @@ public class UserService {
         }
 
         // Encode password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -88,7 +84,7 @@ public class UserService {
 
     public void changePassword(Long userId, String newPassword) {
         User user = getUserById(userId);
-        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPassword(newPassword);
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
