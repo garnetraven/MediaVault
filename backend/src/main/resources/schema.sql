@@ -13,9 +13,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (username, email, password, display_name, bio, avatar_url, is_admin)
-VALUES ('test', 'test@example.com', 'password', 'Test User', NULL, NULL, FALSE);
-
 CREATE TABLE IF NOT EXISTS media (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
