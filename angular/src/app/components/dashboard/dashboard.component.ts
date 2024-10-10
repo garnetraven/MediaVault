@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
 import { Router } from '@angular/router';
+import { Media } from '../../models/media.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,12 +13,12 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   searchTerm: string = '';
-  filteredMediaItems: any[] = [];
-  mediaItems: any[] = [];
+  filteredMediaItems: Media[] = [];
+  mediaItems: Media[] = [];
   showAddMediaForm: boolean = false;
   showEditModal: boolean = false;
-  newMedia: any = { name: "", mediaType: "", imageUrl: "" };
-  editingMedia: any = {id: null, name: "", mediaType: "", imageUrl: ""};
+  newMedia: Media = { id: 0, name: "", mediaType: "", imageUrl: "" };
+  editingMedia: any = {id: 0, name: "", mediaType: "", imageUrl: ""};
 
   constructor(private mediaService: MediaService, private router: Router) {}
 
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
 
   openAddMediaForm() {
     this.showAddMediaForm = true;
-    this.newMedia = {}; // Reset the form
+    this.newMedia = { id: 0, name: "", mediaType: "", imageUrl: "" }; // Reset the form
   }
 
   closeAddMediaForm() {
@@ -100,7 +101,7 @@ export class DashboardComponent implements OnInit {
 
   updateMediaName() {
     this.mediaService.updateMedia(this.editingMedia.id, this.editingMedia).subscribe(
-      updatedMedia => {
+      (updatedMedia: Media) => {
         console.log('Media updated successfully', updatedMedia);
         const index = this.mediaItems.findIndex(item => item.id === updatedMedia.id);
         if (index !== -1) {

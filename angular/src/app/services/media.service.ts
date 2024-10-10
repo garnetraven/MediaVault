@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Media } from '../models/media.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,27 +11,19 @@ export class MediaService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users`);
-  }
-
-  getMediaItems(): Observable<any[]> {
+  getMediaItems(): Observable<Media[]> {
     return this.http.get<any[]>(`${this.apiUrl}/media`);
   }
 
-  addUser(user: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/users`, user);
-  }
-
-  addMediaItem(mediaItem: any): Observable<any> {
+  addMediaItem(mediaItem: Media): Observable<Media> {
     return this.http.post<any>(`${this.apiUrl}/media`, mediaItem);
   }
 
-  deleteMediaItem(id: number): Observable<any> {
+  deleteMediaItem(id: number): Observable<void> {
     return this.http.delete<any>(`${this.apiUrl}/media/${id}`);
   }
 
-  updateMedia(id: number, mediaUpdate: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/media/${id}`, mediaUpdate);
+  updateMedia(id: number, media: Media): Observable<Media> {
+    return this.http.put<any>(`${this.apiUrl}/media/${id}`, media);
   }
 }
