@@ -10,7 +10,8 @@ import { MediaService } from '../../services/media.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-  users: any[] = [];
+  searchTerm: string = '';
+  filteredMediaItems: any[] = [];
   mediaItems: any[] = [];
   showAddMediaForm: boolean = false;
   showEditModal: boolean = false;
@@ -20,22 +21,38 @@ export class DashboardComponent implements OnInit {
   constructor(private mediaService: MediaService) { }
 
   ngOnInit() {
-    this.loadUsers();
     this.loadMediaTypes();
-  }
-
-  loadUsers() {
-    this.mediaService.getUsers().subscribe(
-      data => this.users = data,
-      error => console.error('Error fetching users:', error)
-    );
   }
 
   loadMediaTypes() {
     this.mediaService.getMediaItems().subscribe(
-      data => this.mediaItems = data,
+      data => {
+        this.mediaItems = data;
+        this.filterMediaItems();
+        console.log('Search term:', this.searchTerm);
+        console.log('Filtered items:', this.filteredMediaItems);
+      },
       error => console.error('Error fetching media types:', error)
     );
+  }
+
+  filterMediaItems() {
+    if (!this.searchTerm) {
+      this.filteredMediaItems = this.mediaItems;
+      console.log(this.filteredMediaItems)
+    } else {
+      const searchTerm = this.searchTerm.toLowerCase();
+      this.filteredMediaItems = this.mediaItems.filter(item => 
+        item.name.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+  onSearchChange(newValue?: string) {
+    if (newValue !== undefined) {
+      this.searchTerm = newValue;
+    }
+    this.filterMediaItems();
   }
 
   openAddMediaForm() {
