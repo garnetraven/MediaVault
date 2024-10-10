@@ -8,14 +8,23 @@ import java.util.Optional;
 
 import com.example.MediaVault.repository.MediaRepository;
 import com.example.MediaVault.model.Media;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class MediaService {
+    private static final Logger logger = LoggerFactory.getLogger(MediaService.class);
+
     @Autowired
     private MediaRepository mediaRepository;
 
     public List<Media> getAllMedia() {
-      return mediaRepository.findAll();
+      List<Media> mediaList = mediaRepository.findAll();
+      for (Media media : mediaList) {
+        logger.info("Media: id={}, name={}, mediaType={}, imageUrl={}", 
+        media.getId(), media.getName(), media.getMediaType(), media.getImageUrl());
+      }
+      return mediaList;
     }
 
      public Media createMedia(Media media) {
@@ -36,6 +45,7 @@ public class MediaService {
         if (mediaOptional.isPresent()) {
             Media media = mediaOptional.get();
             media.setName(mediaUpdate.getName());
+            media.setMediaType(mediaUpdate.getMediaType());
             media.setImageUrl(mediaUpdate.getImageUrl());
             return mediaRepository.save(media);
         }

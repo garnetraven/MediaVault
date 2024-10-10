@@ -16,8 +16,8 @@ export class DashboardComponent implements OnInit {
   mediaItems: any[] = [];
   showAddMediaForm: boolean = false;
   showEditModal: boolean = false;
-  newMedia: any = { name: "", imageUrl: "" };
-  editingMedia: any = {id: null, name: "", imageUrl: ""};
+  newMedia: any = { name: "", mediaType: "", imageUrl: "" };
+  editingMedia: any = {id: null, name: "", mediaType: "", imageUrl: ""};
 
   constructor(private mediaService: MediaService, private router: Router) {}
 

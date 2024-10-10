@@ -23,6 +23,10 @@ public class MediaController {
     public ResponseEntity<List<Media>> getAllMedia() {
       try {
         List<Media> mediaList = mediaService.getAllMedia();
+        logger.info("Returning {} media items", mediaList.size());
+        for (Media media : mediaList) {
+          logger.info("Media in controller: {}", media);
+        }
         return ResponseEntity.ok(mediaList);
       } catch (Exception e) {
         logger.error("Error fetching media: ", e);
@@ -33,7 +37,7 @@ public class MediaController {
     @PostMapping("/media")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
       try {
-        System.out.println("Received media: " + media.getName() + ", " + media.getImageUrl());
+        System.out.println("Received media: " + media.getName() + ", " + media.getMediaType(); + ", " + media.getImageUrl());
         Media createdMedia = mediaService.createMedia(media);
         return ResponseEntity.ok(createdMedia);
       } catch (Exception e) {
@@ -70,5 +74,5 @@ public class MediaController {
         logger.error("Error updating media name with id {}: ", id, e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
-}
+  }
 }
