@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model'; 
+import { AuthService } from '../../services/auth.service'; 
 
 @Component({
   selector: 'app-userprofile',
@@ -9,24 +11,30 @@ import { Router } from '@angular/router';
   imports: [ FormsModule, CommonModule],
   standalone: true,
 })
-export class UserProfileComponent {
-  constructor(private router: Router) {}
-  
-  user = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    username: 'johndoe',
-    notifications: 'enabled',
-    memberSince: new Date('2021-01-15'),
-    profileImageUrl: 'https://imgs.search.brave.com/WxVALL1Op5-rTCoQIYZXBRZ4BtbduU9IS6SCDXeQZfs/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9zaW1wbGUtc21p/bGUtaGFwcHktbWFu/LWRpZ2l0YWwtcG9y/dHJhaXQtYnJpZ2h0/LXJlZC1iYWNrZ3Jv/dW5kXzk2NDYxLTEz/MzE1LmpwZz9zaXpl/PTYyNiZleHQ9anBn'
-  };
-
+export class UserProfileComponent implements OnInit {
+  user: User | null = null;
+  activeTab: string = 'profile';
   password = {
     current: '',
     new: ''
   };
 
-  activeTab: string = 'profile';
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
+    this.authService.getCurrentUser().subscribe(
+      (user: User) => {
+        this.user = user;
+      },
+      (error) => {
+        console.error('Error loading user profile:', error);
+      }
+    );
+  }
 
   goBack() {
     this.router.navigate(['/dashboard']);
@@ -37,12 +45,39 @@ export class UserProfileComponent {
   }
 
   updateSettings() {
-    // Implement settings update logic here
-    console.log('Settings updated', this.user);
+    if (this.user) {
+      this.authService.updateUserProfile(this.user.username, this.user).subscribe(
+        (updatedUser: User) => {
+          console.log('Settings updated', updatedUser);
+          this.user = updatedUser;
+        },
+        (error: any) => {
+          console.error('Error updating settings:', error);
+          // Handle error (e.g., show error message to user)
+        }
+      );
+    }
   }
 
   updatePassword() {
-    // Implement password update logic here
-    console.log('Password updated', this.password);
+  if (this.user && this.user.username) {
+    this.authService.updatePassword(this.user.username, this.password.current, this.password.new).subscribe(
+      () => {
+        console.log('Password updated successfully');
+        this.password = { current: '', new: '' };
+        // Show success message to user
+        // For example: this.showSuccessMessage('Password updated successfully');
+      },
+      (error: any) => {
+        console.error('Error updating password:', error);
+        // Handle error (e.g., show error message to user)
+        // For example: this.showErrorMessage('Failed to update password. Please try again.');
+      }
+    );
+  } else {
+    console.error('User is not logged in or username is not available');
+    // Handle the case where user is not available
+    // For example: this.showErrorMessage('You must be logged in to change your password');
   }
+}
 }
