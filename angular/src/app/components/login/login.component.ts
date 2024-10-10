@@ -16,10 +16,13 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
+    // Temperarily route to dashboard
+    this.router.navigate(['/dashboard']);
+
     this.authService.login(this.username, this.password).subscribe(
       response => {
         // Handle successful login (e.g., store token, redirect)
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
       },
       error => {
         // Handle login error
