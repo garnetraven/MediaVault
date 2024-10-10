@@ -37,7 +37,7 @@ public class MediaController {
     @PostMapping("/media")
     public ResponseEntity<Media> createMedia(@RequestBody Media media) {
       try {
-        System.out.println("Received media: " + media.getName() + ", " + media.getMediaType(); + ", " + media.getImageUrl());
+        System.out.println("Received media: " + media.getName() + ", " + media.getMediaType() + ", " + media.getImageUrl());
         Media createdMedia = mediaService.createMedia(media);
         return ResponseEntity.ok(createdMedia);
       } catch (Exception e) {

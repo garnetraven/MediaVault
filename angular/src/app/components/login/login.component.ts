@@ -1,32 +1,31 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [ FormsModule],
+  imports: [CommonModule, FormsModule],
   standalone: true,
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  errorMessage: String = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    // Temperarily route to dashboard
-    this.router.navigate(['/dashboard']);
-
     this.authService.login(this.username, this.password).subscribe(
       response => {
-        // Handle successful login (e.g., store token, redirect)
+        console.log('Login successful', response)
         this.router.navigate(['/dashboard']);
       },
       error => {
-        // Handle login error
         console.error('Login failed', error);
+        this.errorMessage = 'Invalid username or password';
       }
     );
   }
