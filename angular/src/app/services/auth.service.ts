@@ -15,4 +15,10 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { username, password }, 
       { headers: headers, responseType: 'text' });
   }
+
+  register(username: string, password: string): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/register`, { username, password },
+      { headers: headers, responseType: 'text' });
+  }
 }
