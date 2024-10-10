@@ -18,4 +18,13 @@ public class AuthService {
         Optional<User> user = userRepository.findByUsername(username);
         return user.isPresent() && user.get().getPassword().equals(password);
     }
+
+    public User register(String username, String password) {
+      if (userRepository.existsByUsername(username)) {
+        throw new RuntimeException("Username already exists");
+      }
+
+      User newUser = new User(username, password);
+      return userRepository.save(newUser);
+    }
 }
