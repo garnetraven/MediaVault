@@ -21,8 +21,13 @@
           <h2 class="text-2xl font-semibold text-gray-800">{{ user.name }}</h2>
           <p class="text-gray-600">{{ user.email }}</p>
         </div>
+        <div>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" (click)="goBack()">
+            Back
+          </button>
+        </div>
       </div>
-
+      
       <!-- Tabs Navigation -->
       <div class="mt-6 border-b border-gray-200">
         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
@@ -75,12 +80,12 @@
             <div class="mb-4">
               <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
               <input type="text" id="username" name="username" [(ngModel)]="user.username" required
-                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                     class="mt-1 w-1/4 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
               <label for="notification" class="block text-sm font-medium text-gray-700">Email Notifications</label>
               <select id="notification" name="notification" [(ngModel)]="user.notifications"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                      class="mt-1 w-1/4 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                 <option value="enabled">Enabled</option>
                 <option value="disabled">Disabled</option>
               </select>
@@ -100,12 +105,12 @@
             <div class="mb-4">
               <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
               <input type="password" id="currentPassword" name="currentPassword" [(ngModel)]="password.current" required
-                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                     class="mt-1 w-1/4 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
               <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
               <input type="password" id="newPassword" name="newPassword" [(ngModel)]="password.new" required
-                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                     class="mt-1 w-1/4 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             </div>
             <div class="flex justify-end">
               <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
