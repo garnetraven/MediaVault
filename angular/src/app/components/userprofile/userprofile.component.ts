@@ -28,10 +28,6 @@ export class UserProfileComponent {
 
   activeTab: string = 'profile';
 
-  onSubmit() {
-    this.router.navigate(['/dashboard']);
-  }
-
   goBack() {
     this.router.navigate(['/dashboard']);
   }

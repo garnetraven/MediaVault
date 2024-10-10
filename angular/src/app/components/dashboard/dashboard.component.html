@@ -8,9 +8,12 @@
             <h1 class="text-xl font-bold text-gray-800">MediaVault</h1>
           </div>
         </div>
-        <div class="flex items-center">
-          <button (click)="openAddMediaForm()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-            Add New Media
+        <div class="flex items-center space-x-4">
+          <button (click)="goToProfile()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Profile
+          </button>
+          <button (click)="signOut()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            Sign Out
           </button>
         </div>
       </div>
@@ -44,6 +47,13 @@
           </div>
         </form>
       </div>
+    </div>
+
+    <!-- Sub Navigation -->
+    <div class="mb-6">
+      <button (click)="openAddMediaForm()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        Add New Media
+      </button>
     </div>
 
     <!-- Search Bar -->

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,7 @@ export class DashboardComponent implements OnInit {
   newMedia: any = { name: "", imageUrl: "" };
   editingMedia: any = {id: null, name: "", imageUrl: ""};
 
-  constructor(private mediaService: MediaService) { }
+  constructor(private mediaService: MediaService, private router: Router) {}
 
   ngOnInit() {
     this.loadMediaTypes();
@@ -109,5 +110,13 @@ export class DashboardComponent implements OnInit {
       },
       error => console.error('Error updating media:', error)
     );
+  }
+
+  goToProfile() {
+    this.router.navigate(['/userprofile'])
+  }
+
+  signOut() {
+    this.router.navigate(['/login'])
   }
 }
