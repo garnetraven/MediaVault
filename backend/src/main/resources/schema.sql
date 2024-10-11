@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS media (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
     media_type VARCHAR(50) NOT NULL,
-    image_url VARCHAR(255)
+    image_url VARCHAR(255),
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

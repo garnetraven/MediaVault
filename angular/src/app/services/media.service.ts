@@ -7,23 +7,23 @@ import { Media } from '../models/media.model';
   providedIn: 'root'
 })
 export class MediaService {
-  private apiUrl = 'http://localhost:8080/api'; 
+  private apiUrl = 'http://localhost:8080/api/media';
 
   constructor(private http: HttpClient) {}
 
-  getMediaItems(): Observable<Media[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/media`);
+  getMediaItemsByUsername(username: string): Observable<Media[]> {
+    return this.http.get<Media[]>(`${this.apiUrl}/user/${username}`);
   }
 
-  addMediaItem(mediaItem: Media): Observable<Media> {
-    return this.http.post<any>(`${this.apiUrl}/media`, mediaItem);
+  addMediaItem(username: string, mediaItem: Media): Observable<Media> {
+    return this.http.post<Media>(`${this.apiUrl}/user/${username}`, mediaItem);
   }
 
-  deleteMediaItem(id: number): Observable<void> {
-    return this.http.delete<any>(`${this.apiUrl}/media/${id}`);
+  deleteMediaItem(id: number, username: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}/user/${username}`);
   }
 
-  updateMedia(id: number, media: Media): Observable<Media> {
-    return this.http.put<any>(`${this.apiUrl}/media/${id}`, media);
+  updateMedia(id: number, username: string, media: Media): Observable<Media> {
+    return this.http.put<Media>(`${this.apiUrl}/${id}/user/${username}`, media);
   }
 }

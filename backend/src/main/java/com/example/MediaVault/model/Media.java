@@ -22,16 +22,21 @@ public class Media {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Media() {}
 
     public Media(String name) {
       this.name = name;
     }
 
-    public Media(String name, String mediaType, String imageUrl) {
+    public Media(String name, String mediaType, String imageUrl, User user) {
       this.name = name;
       this.mediaType = mediaType;
       this.imageUrl = imageUrl;
+      this.user = user;
     }
 
     public Long getId() {
@@ -64,5 +69,13 @@ public class Media {
 
     public void setImageUrl(String imageUrl) {
       this.imageUrl = imageUrl;
+    }
+
+    public User getUser() {
+      return this.user;
+    }
+
+    public void setUser(User user) {
+      this.user = user;
     }
 }

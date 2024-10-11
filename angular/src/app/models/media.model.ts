@@ -3,4 +3,5 @@ export interface Media {
   name: string;
   mediaType: string;
   imageUrl: string;
+  userId: number;
 }
