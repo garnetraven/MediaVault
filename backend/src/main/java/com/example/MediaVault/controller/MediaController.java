@@ -34,7 +34,7 @@ public class MediaController {
     @PostMapping("/user/{username}")
     public ResponseEntity<Media> createMedia(@PathVariable String username, @RequestBody Media media) {
       try {
-        logger.info("Received medi for user {}: {}", username, media.getName());
+        logger.info("Received media for user {}: {}", username, media.getName());
         Media createdMedia = mediaService.createMedia(username, media);
         return ResponseEntity.ok(createdMedia);
       } catch (Exception e) {
