@@ -26,8 +26,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Media> mediaList;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Media> media;
 
     public User() {}
 

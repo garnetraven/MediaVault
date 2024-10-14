@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Media } from '../models/media.model';
+import { PagedResponse } from '../models/paged-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,11 @@ export class MediaService {
 
   constructor(private http: HttpClient) {}
 
-  getMediaItemsByUsername(username: string): Observable<Media[]> {
-    return this.http.get<Media[]>(`${this.apiUrl}/user/${username}`);
+  getMediaItemsByUsername(username: string, page: number, size: number): Observable<PagedResponse<Media>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PagedResponse<Media>>(`${this.apiUrl}/user/${username}`, { params });
   }
 
   addMediaItem(username: string, mediaItem: Media): Observable<Media> {

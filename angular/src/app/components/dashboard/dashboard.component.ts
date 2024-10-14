@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
 import { Media } from '../../models/media.model';
-import { AuthService } from '../../services/auth.service'; 
 import { AuthStateService } from '../../services/authstate.service';
 
 @Component({
@@ -22,9 +21,13 @@ export class DashboardComponent implements OnInit {
   editingMedia: Media = { id: 0, name: "", mediaType: "", imageUrl: "", userId: 0 };
   username: string = '';
 
+  currentPage: number = 0;
+  pageSize: number = 8;
+  totalPages: number = 0;
+  totalItems: number = 0;
+
   constructor(
     private mediaService: MediaService, 
-    private authService: AuthService,
     private authStateService: AuthStateService,
   ) {}
 
@@ -38,13 +41,30 @@ export class DashboardComponent implements OnInit {
   }
 
   loadMediaItems() {
-    this.mediaService.getMediaItemsByUsername(this.username).subscribe(
-      data => {
-        this.mediaItems = data;
+    this.mediaService.getMediaItemsByUsername(this.username, this.currentPage, this.pageSize).subscribe(
+      response => {
+        this.mediaItems = response.content;
+        this.totalPages = response.totalPages;
+        this.totalItems = response.totalElements;
+        this.currentPage = response.number;
         this.filterMediaItems();
       },
       error => console.error('Error fetching media items:', error)
     );
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      this.loadMediaItems();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.loadMediaItems();
+    }
   }
 
   filterMediaItems() {
@@ -78,9 +98,8 @@ export class DashboardComponent implements OnInit {
     this.mediaService.addMediaItem(this.username, this.newMedia).subscribe(
       response => {
         console.log('Media added successfully', response);
-        this.mediaItems.push(response);
         this.closeAddMediaForm();
-        this.filterMediaItems();
+        this.loadMediaItems();
       },
       error => console.error('Error adding media:', error)
     );
@@ -91,8 +110,7 @@ export class DashboardComponent implements OnInit {
       this.mediaService.deleteMediaItem(id, this.username).subscribe(
         () => {
           console.log("Media deleted successfully");
-          this.mediaItems = this.mediaItems.filter(item => item.id !== id);
-          this.filterMediaItems();
+          this.loadMediaItems();
         },
         error => console.error("Error deleting media: ", error)
       );
@@ -117,7 +135,7 @@ export class DashboardComponent implements OnInit {
           this.mediaItems[index] = updatedMedia;
         }
         this.closeEditModal();
-        this.filterMediaItems();
+        this.loadMediaItems();
       },
       error => console.error('Error updating media:', error)
     );

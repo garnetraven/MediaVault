@@ -3,7 +3,6 @@ package com.example.MediaVault.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.example.MediaVault.repository.MediaRepository;
@@ -12,7 +11,8 @@ import com.example.MediaVault.model.Media;
 import com.example.MediaVault.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Collections;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class MediaService {
@@ -24,19 +24,9 @@ public class MediaService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Media> getMediaByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isPresent()) {
-          User user = optionalUser.get();
-
-          List<Media> mediaList = mediaRepository.findByUser(user);
-          for (Media media : mediaList) {
-            logger.info("Media for user {}: id={}, name={}, mediaType={}, imageUrl={}", username, media.getId(), media.getName(), media.getMediaType(), media.getImageUrl());
-          }
-          return mediaList;
-        }
-        logger.warn("User not found: {}", username);
-        return Collections.emptyList();
+    public Page<Media> getMediaByUsername(String username, Pageable pageable) {
+      User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+      return mediaRepository.findByUser(user, pageable);
     }
 
     public Media createMedia(String username, Media media) {

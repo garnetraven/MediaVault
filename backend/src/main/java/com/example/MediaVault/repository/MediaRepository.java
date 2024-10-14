@@ -1,13 +1,12 @@
 package com.example.MediaVault.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import com.example.MediaVault.model.Media;
 import com.example.MediaVault.model.User;
 
-import java.util.List;
-
 public interface MediaRepository extends JpaRepository<Media, Long> {
-  List<Media> findByUser(User user);
+  Page<Media> findByUser(User user, Pageable pageable);
   Media findByName(String name);
 }
