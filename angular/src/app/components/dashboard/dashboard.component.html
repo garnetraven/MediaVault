@@ -1,46 +1,17 @@
 <div class="min-h-screen bg-gray-100">
-  <!-- Main Content -->
   <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <!-- Add Media Form -->
-    <div *ngIf="showAddMediaForm" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-      <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add New Media</h3>
-        <form (ngSubmit)="addNewMedia()">
-          <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input type="text" id="name" name="name" [(ngModel)]="newMedia.name" required
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mb-4">
-            <label for="editMediaType" class="block text-sm font-medium text-gray-700">Media Type</label>
-            <input type="text" id="mediaType" name="mediaType" [(ngModel)]="newMedia.mediaType" required
-               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mb-4">
-            <label for="editImageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
-            <input type="text" id="imageUrl" name="imageUrl" [(ngModel)]="newMedia.imageUrl" required
-               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mt-4 flex justify-end">
-            <button type="button" (click)="closeAddMediaForm()" class="mr-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Cancel
-            </button>
-            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              Add Media
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <app-add-media-form *ngIf="showAddMediaForm"
+      [newMedia]="newMedia"
+      (add)="addNewMedia()"
+      (cancel)="closeAddMediaForm()">
+    </app-add-media-form>
 
-    <!-- Sub Navigation -->
     <div class="mb-6">
       <button (click)="openAddMediaForm()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
         Add New Media
       </button>
     </div>
 
-    <!-- Search Bar -->
     <div class="mb-6">
       <input type="text"
              [(ngModel)]="searchTerm"
@@ -49,70 +20,26 @@
              class="w-full px-4 py-2 rounded-lg shadow-sm border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
     </div>
 
-    <!-- Media Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <!-- Media Item (repeated for each item in mediaItems) -->
-      <div *ngFor="let item of filteredMediaItems" class="bg-white rounded-lg shadow-md overflow-hidden">
-        <img [src]="item.imageUrl || 'path_to_default_thumbnail'" 
-            [alt]="item.name + ' Thumbnail'" 
-            class="w-full h-48 object-cover">
-        <div class="p-4">
-          <h3 class="text-lg font-semibold text-gray-800">{{ item.name }}</h3>
-          <p class="text-m font-semibold text-gray-700">{{ item.mediaType }}</p>
-          <div class="mt-4 flex justify-between">
-            <button (click)="openEditModal(item)"class="text-blue-500 hover:text-blue-600">Edit</button>
-            <button (click)="deleteMedia(item.id)" class="text-red-500 hover:text-red-600">Delete</button>
-          </div>
-        </div>
-      </div>
+      <app-media-item *ngFor="let item of filteredMediaItems"
+        [item]="item"
+        (edit)="openEditModal($event)"
+        (delete)="deleteMedia($event)">
+      </app-media-item>
     </div>
 
-    <!-- Edit Media Modal -->
-    <div *ngIf="showEditModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-      <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Media Name</h3>
-        <form (ngSubmit)="updateMediaName()">
-          <div class="mb-4">
-            <label for="editName" class="block text-sm font-medium text-gray-700">Name</label>
-            <input type="text" id="editName" name="editName" [(ngModel)]="editingMedia.name" required
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mb-4">
-            <label for="editImageUrl" class="block text-sm font-medium text-gray-700">Media Type</label>
-            <input type="text" id="editMediaType" name="editMediaType" [(ngModel)]="editingMedia.mediaType"
-               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mb-4">
-            <label for="editImageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
-            <input type="text" id="editImageUrl" name="editImageUrl" [(ngModel)]="editingMedia.imageUrl"
-               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-          </div>
-          <div class="mt-4 flex justify-end">
-            <button type="button" (click)="closeEditModal()" class="mr-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Cancel
-            </button>
-            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              Update
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Pagination -->
+    <app-edit-media-modal *ngIf="showEditModal"
+      [editingMedia]="editingMedia"
+      (update)="updateMediaName()"
+      (cancel)="closeEditModal()">
+    </app-edit-media-modal>
+
     <div class="mt-8 flex justify-center">
-      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-        <button (click)="previousPage()" [disabled]="currentPage === 0"
-          class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-          Previous
-        </button>
-        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-          Page {{ currentPage + 1 }} of {{ totalPages }}
-        </span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1"
-          class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-          Next
-        </button>
-      </nav>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
     </div>
   </main>
 </div>

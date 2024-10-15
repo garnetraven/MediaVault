@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MediaItemComponent } from '../mediaitem/media-item.component';
+import { AddMediaFormComponent } from '../addmediaform/add-media-form.component';
+import { EditMediaModalComponent } from '../editmediaform/edit-media-modal.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 import { MediaService } from '../../services/media.service';
 import { Media } from '../../models/media.model';
 import { AuthStateService } from '../../services/authstate.service';
@@ -8,7 +12,14 @@ import { AuthStateService } from '../../services/authstate.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MediaItemComponent,
+    AddMediaFormComponent,
+    EditMediaModalComponent,
+    PaginationComponent,
+  ],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
@@ -38,6 +49,11 @@ export class DashboardComponent implements OnInit {
     } else {
       this.loadMediaItems();
     }
+  }
+
+  onPageChange(newPage: number) {
+    this.currentPage = newPage;
+    this.loadMediaItems();
   }
 
   loadMediaItems() {
