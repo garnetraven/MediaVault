@@ -6,6 +6,7 @@ import { AuthStateService } from '../../services/authstate.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
   imports: [CommonModule],
   standalone: true,
 })

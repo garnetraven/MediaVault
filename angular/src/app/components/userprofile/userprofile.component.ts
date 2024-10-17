@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-userprofile',
   templateUrl: './userprofile.component.html',
+  styleUrls: ['./userprofile.component.css'],
   imports: [ FormsModule, CommonModule],
   standalone: true,
 })

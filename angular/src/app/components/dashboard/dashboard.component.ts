@@ -21,6 +21,7 @@ import { AuthStateService } from '../../services/authstate.service';
     PaginationComponent,
   ],
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   searchTerm: string = '';
