@@ -8,5 +8,5 @@ import com.example.MediaVault.model.User;
 
 public interface MediaRepository extends JpaRepository<Media, Long> {
   Page<Media> findByUser(User user, Pageable pageable);
-  Media findByName(String name);
+  Page<Media> findByUserAndMediaType(User user, String mediaType, Pageable pageable);
 }

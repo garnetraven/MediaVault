@@ -22,9 +22,13 @@ public class MediaController {
     private MediaService mediaService;
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<Page<Media>> getUserMedia(@PathVariable String username, @PageableDefault(size = 8) Pageable pageable) {
+    public ResponseEntity<Page<Media>> getUserMedia (
+        @PathVariable String username,
+        @RequestParam(required = false) String mediaType,
+        @PageableDefault(size = 8) Pageable pageable
+    ) {
       try {
-        Page<Media> mediaPage = mediaService.getMediaByUsername(username, pageable);
+        Page<Media> mediaPage = mediaService.getMediaByUsername(username, mediaType, pageable);
         logger.info("Returning page {} of {} for user", mediaPage.getNumber(), mediaPage.getTotalPages(), username);
         return ResponseEntity.ok(mediaPage);
       } catch (Exception e) {

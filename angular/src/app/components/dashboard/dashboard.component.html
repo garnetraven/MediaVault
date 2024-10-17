@@ -13,6 +13,10 @@
     </div>
 
     <div class="mb-6">
+      <app-media-filter (filterChange)="onFilterChange($event)"></app-media-filter>
+    </div>
+
+    <div class="mb-6">
       <input type="text"
              [(ngModel)]="searchTerm"
              (ngModelChange)="onSearchChange()"

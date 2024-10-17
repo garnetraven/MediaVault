@@ -3,11 +3,12 @@ package com.example.MediaVault.model;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Getter
 @Setter
 @Table(name = "media")
+@JsonIgnoreProperties({"user"})
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Media {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -77,5 +78,9 @@ public class Media {
 
     public void setUser(User user) {
       this.user = user;
+    }
+
+    public Long getUserId() {
+      return this.user.getId();
     }
 }

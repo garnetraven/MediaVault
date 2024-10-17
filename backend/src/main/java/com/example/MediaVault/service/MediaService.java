@@ -24,9 +24,18 @@ public class MediaService {
     @Autowired
     private UserRepository userRepository;
 
-    public Page<Media> getMediaByUsername(String username, Pageable pageable) {
-      User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-      return mediaRepository.findByUser(user, pageable);
+    public Page<Media> getMediaByUsername(String username, String mediaType, Pageable pageable) {
+        logger.info("Fetching media for user: {}, mediaType: {}", username, mediaType);
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("User not found: " + username));
+        logger.info("User found: {}", user.getId());
+
+        Page<Media> result;
+        if (mediaType != null && !mediaType.isEmpty()) {
+            return mediaRepository.findByUserAndMediaType(user, mediaType, pageable);
+        } else {
+            return mediaRepository.findByUser(user, pageable);
+        }
     }
 
     public Media createMedia(String username, Media media) {

@@ -5,6 +5,7 @@ import { MediaItemComponent } from '../mediaitem/media-item.component';
 import { AddMediaFormComponent } from '../addmediaform/add-media-form.component';
 import { EditMediaModalComponent } from '../editmediaform/edit-media-modal.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { MediaFilterComponent } from '../mediafilter/media-filter.component';
 import { MediaService } from '../../services/media.service';
 import { Media } from '../../models/media.model';
 import { AuthStateService } from '../../services/authstate.service';
@@ -19,6 +20,7 @@ import { AuthStateService } from '../../services/authstate.service';
     AddMediaFormComponent,
     EditMediaModalComponent,
     PaginationComponent,
+    MediaFilterComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -27,6 +29,7 @@ export class DashboardComponent implements OnInit {
   searchTerm: string = '';
   filteredMediaItems: Media[] = [];
   mediaItems: Media[] = [];
+  selectedMediaType: string = '';
   showAddMediaForm: boolean = false;
   showEditModal: boolean = false;
   newMedia: Media = { id: 0, name: "", mediaType: "", imageUrl: "", userId: 0 };
@@ -57,8 +60,19 @@ export class DashboardComponent implements OnInit {
     this.loadMediaItems();
   }
 
+  onFilterChange(mediaType: string) {
+    this.selectedMediaType = mediaType;
+    this.currentPage = 0;
+    this.loadMediaItems();
+  }
+
   loadMediaItems() {
-    this.mediaService.getMediaItemsByUsername(this.username, this.currentPage, this.pageSize).subscribe(
+    this.mediaService.getMediaItemsByUsername(
+      this.username,
+      this.currentPage,
+      this.pageSize,
+      this.selectedMediaType || undefined
+    ).subscribe(
       response => {
         this.mediaItems = response.content;
         this.totalPages = response.totalPages;

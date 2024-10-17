@@ -12,10 +12,15 @@ export class MediaService {
 
   constructor(private http: HttpClient) {}
 
-  getMediaItemsByUsername(username: string, page: number, size: number): Observable<PagedResponse<Media>> {
+  getMediaItemsByUsername(username: string, page: number, size: number, mediaType?: string): Observable<PagedResponse<Media>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+
+    if (mediaType && mediaType !== '') {
+      params = params.set('mediaType', mediaType);
+    }
+
     return this.http.get<PagedResponse<Media>>(`${this.apiUrl}/user/${username}`, { params });
   }
 
